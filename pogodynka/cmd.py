@@ -24,7 +24,7 @@ def main():
 
     pm_port = serial.Serial(args.pm_sensor_device)
     pm_sensor = sds011.SDS011(pm_port)
-    temperature_sensor = sds011.SDS011(args.pm_sensor_device)
+    temperature_sensor = ds18b20.DS18B20(args.temperature_sensor_path)
     measurement_time = datetime.datetime.utcnow()
 
     cache = store.Cache(args.cache_path)
