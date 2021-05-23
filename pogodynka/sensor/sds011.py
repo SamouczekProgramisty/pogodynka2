@@ -28,6 +28,8 @@ class SDS011:
     """
 
     DATA_PACKET_SIZE = 10
+    MEASUREMENT_PM25_TYPE = "PM2.5"
+    MEASUREMENT_PM10_TYPE = "PM10"
 
     def __init__(self, device_path):
         self.device_path = device_path
@@ -39,3 +41,17 @@ class SDS011:
     def poke_10(self):
         data = self.read_pm_data()
         return int.from_bytes(b"".join(data[4:6]), byteorder="little") / 10
+
+    def poke_25_with_time(self, time):
+        return sensor.Measurement(
+            time=time,
+            type=self.MEASUREMENT_PM25_TYPE,
+            value=self.poke_25(),
+        )
+
+    def poke_10_with_time(self, time):
+        return sensor.Measurement(
+            time=time,
+            type=self.MEASUREMENT_PM10_TYPE,
+            value=self.poke_10(),
+        )

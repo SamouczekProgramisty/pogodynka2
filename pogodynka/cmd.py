@@ -16,6 +16,9 @@ def main():
     parser.add_argument("--pm-sensor-device", required=True)
     parser.add_argument("--cache-directory")
     parser.add_argument("--sensor-location", default="")
+    parser.add_argument(
+        "--destination-table", default="sp-pogodynka.sensor.measurement"
+    )
 
     args = parser.parse_args()
 
@@ -32,7 +35,7 @@ def main():
 
     gbq_client = bigquery.Client()
 
-    store.stream_to_gbq(gbq_client, measurements)
+    store.stream_to_gbq(gbq_client, args.destination_table, measurements)
 
 
 if __name__ == "__main__":
