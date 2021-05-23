@@ -1,9 +1,4 @@
-import datetime
-import json
+import collections
 
 
-class Measurement:
-    def __init__(self, time, type, value):
-        self.time = time
-        self.type = type
-        self.value = value
+Measurement = collections.namedtuple("Measurement", ("time", "type", "value"))

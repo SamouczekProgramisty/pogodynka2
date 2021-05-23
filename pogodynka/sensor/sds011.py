@@ -34,24 +34,24 @@ class SDS011:
     def __init__(self, device_path):
         self.device_path = device_path
 
-    def poke_25(self):
+    def raw_poke_25(self):
         data = self.read_pm_data()
         return int.from_bytes(b"".join(data[2:4]), byteorder="little") / 10
 
-    def poke_10(self):
+    def raw_poke_10(self):
         data = self.read_pm_data()
         return int.from_bytes(b"".join(data[4:6]), byteorder="little") / 10
 
-    def poke_25_with_time(self, time):
+    def poke_25(self, time):
         return sensor.Measurement(
             time=time,
             type=self.MEASUREMENT_PM25_TYPE,
-            value=self.poke_25(),
+            value=self.raw_poke_25(),
         )
 
-    def poke_10_with_time(self, time):
+    def poke_10(self, time):
         return sensor.Measurement(
             time=time,
             type=self.MEASUREMENT_PM10_TYPE,
-            value=self.poke_10(),
+            value=self.raw_poke_10(),
         )
