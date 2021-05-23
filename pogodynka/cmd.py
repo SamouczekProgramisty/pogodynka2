@@ -42,6 +42,7 @@ def main():
 
     try:
         store.stream_to_gbq(gbq_client, args.destination_table, measurements)
+        cache.clear()
     except store.StoreError:
         cache.dump(measurements)
         raise

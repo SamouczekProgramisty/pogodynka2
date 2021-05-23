@@ -43,3 +43,6 @@ class Cache:
     def dump(self, measurements):
         with open(self.cache_path, "wb") as cache_file:
             pickle.dump(measurements, cache_file)
+
+    def clear(self):
+        self.dump([])
