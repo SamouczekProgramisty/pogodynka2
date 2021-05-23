@@ -31,16 +31,21 @@ class SDS011:
     MEASUREMENT_PM25_TYPE = "PM2.5"
     MEASUREMENT_PM10_TYPE = "PM10"
 
+    HEADER = 0xAA
+    TAIL = 0xAB
+
     def __init__(self, port):
         self.port = port
 
     def raw_poke_25(self):
-        data = self.port.read(self.DATA_PACKET_SIZE)
-        return int.from_bytes(b"".join(data[2:4]), byteorder="little") / 10
+        data = self.read_bytes()
+        # data[3] * 256 + data[2]
+        return int.from_bytes(data[2:4], byteorder="little") / 10
 
     def raw_poke_10(self):
-        data = self.port.read(self.DATA_PACKET_SIZE)
-        return int.from_bytes(b"".join(data[4:6]), byteorder="little") / 10
+        data = self.read_bytes()
+        # data[5] * 256 + data[4]
+        return int.from_bytes(data[4:6], byteorder="little") / 10
 
     def poke_25(self, time):
         return sensor.Measurement(
@@ -55,3 +60,11 @@ class SDS011:
             type=self.MEASUREMENT_PM10_TYPE,
             value=self.raw_poke_10(),
         )
+
+    def read_bytes(self):
+        data = self.port.read(self.DATA_PACKET_SIZE)
+
+        assert data[0] == self.HEADER
+        assert data[9] == self.TAIL
+
+        return data
