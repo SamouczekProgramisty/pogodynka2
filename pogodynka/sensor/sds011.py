@@ -1,4 +1,4 @@
-import serial
+from pogodynka import sensor
 
 
 class SDS011:
@@ -31,15 +31,15 @@ class SDS011:
     MEASUREMENT_PM25_TYPE = "PM2.5"
     MEASUREMENT_PM10_TYPE = "PM10"
 
-    def __init__(self, device_path):
-        self.device_path = device_path
+    def __init__(self, port):
+        self.port = port
 
     def raw_poke_25(self):
-        data = self.read_pm_data()
+        data = self.port.read(self.DATA_PACKET_SIZE)
         return int.from_bytes(b"".join(data[2:4]), byteorder="little") / 10
 
     def raw_poke_10(self):
-        data = self.read_pm_data()
+        data = self.port.read(self.DATA_PACKET_SIZE)
         return int.from_bytes(b"".join(data[4:6]), byteorder="little") / 10
 
     def poke_25(self, time):
