@@ -1,4 +1,10 @@
-import collections
+import dataclasses
+import datetime
 
 
-Measurement = collections.namedtuple("Measurement", ("time", "type", "value"))
+@dataclasses.dataclass
+class Measurement:
+    time: datetime.datetime
+    pm25: float
+    pm10: float
+    temperature: float

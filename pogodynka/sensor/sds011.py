@@ -37,29 +37,15 @@ class SDS011:
     def __init__(self, port):
         self.port = port
 
-    def raw_poke_25(self):
+    def poke_25(self):
         data = self.read_bytes()
         # data[3] * 256 + data[2]
         return int.from_bytes(data[2:4], byteorder="little") / 10
 
-    def raw_poke_10(self):
+    def poke_10(self):
         data = self.read_bytes()
         # data[5] * 256 + data[4]
         return int.from_bytes(data[4:6], byteorder="little") / 10
-
-    def poke_25(self, time):
-        return sensor.Measurement(
-            time=time,
-            type=self.MEASUREMENT_PM25_TYPE,
-            value=self.raw_poke_25(),
-        )
-
-    def poke_10(self, time):
-        return sensor.Measurement(
-            time=time,
-            type=self.MEASUREMENT_PM10_TYPE,
-            value=self.raw_poke_10(),
-        )
 
     def read_bytes(self):
         data = self.port.read(self.DATA_PACKET_SIZE)

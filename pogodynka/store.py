@@ -6,6 +6,8 @@ from os import path
 
 from pogodynka import sensor
 
+from google.cloud import exceptions
+
 
 class StoreError(Exception):
     pass
@@ -19,12 +21,17 @@ def stream_to_gbq(client, scoped_table, measurements):
     for measurement in measurements:
         row = {
             "time": measurement.time.strftime(GBQ_TIMESTAMP_FORMAT),
-            "type": measurement.type,
-            "value": measurement.value,
+            "pm25": measurement.pm25,
+            "pm10": measurement.pm10,
+            "temperature": measurement.temperature,
         }
         rows_to_insert.append(row)
 
-    errors = client.insert_rows_json(scoped_table, rows_to_insert)
+    try:
+        errors = client.insert_rows_json(scoped_table, rows_to_insert)
+    except exceptions.BadRequest as e:
+        raise StoreError(e)
+
     if errors != []:
         raise StoreError(errors)
 

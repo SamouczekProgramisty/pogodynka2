@@ -25,17 +25,17 @@ def main():
     pm_port = serial.Serial(args.pm_sensor_device)
     pm_sensor = sds011.SDS011(pm_port)
     temperature_sensor = ds18b20.DS18B20(args.temperature_sensor_path)
-    measurement_time = datetime.datetime.utcnow()
 
     cache = store.Cache(args.cache_path)
 
     measurements = cache.load()
-    measurements.extend(
-        [
-            pm_sensor.poke_25(measurement_time),
-            pm_sensor.poke_10(measurement_time),
-            temperature_sensor.poke(measurement_time),
-        ]
+    measurements.append(
+        sensor.Measurement(
+            time=datetime.datetime.utcnow(),
+            pm25=pm_sensor.poke_25(),
+            pm10=pm_sensor.poke_10(),
+            temperature=temperature_sensor.poke(),
+        ),
     )
 
     gbq_client = bigquery.Client()
