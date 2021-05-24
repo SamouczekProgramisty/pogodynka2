@@ -4,11 +4,8 @@ import argparse
 
 from google.cloud import bigquery
 
+from pogodynka import store, sensor
 from pogodynka.sensor import ds18b20, sds011
-from pogodynka import store
-
-
-SENSOR_TEMPERATURE = "temperature"
 
 
 def main():

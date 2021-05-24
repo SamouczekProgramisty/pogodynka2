@@ -28,9 +28,6 @@ class SDS011:
     """
 
     DATA_PACKET_SIZE = 10
-    MEASUREMENT_PM25_TYPE = "PM2.5"
-    MEASUREMENT_PM10_TYPE = "PM10"
-
     HEADER = 0xAA
     TAIL = 0xAB
 
