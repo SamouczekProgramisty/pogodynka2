@@ -15,10 +15,10 @@ def port_mock():
 def test_pm25(port_mock):
     pm_sensor = sds011.SDS011(port_mock)
 
-    assert pm_sensor.poke_25() == 2.8
+    assert pm_sensor.poke_25() == pytest.approx(2.8)
 
 
 def test_pm10(port_mock):
     pm_sensor = sds011.SDS011(port_mock)
 
-    assert pm_sensor.poke_10() == 4.9
+    assert pm_sensor.poke_10() == pytest.approx(4.9)

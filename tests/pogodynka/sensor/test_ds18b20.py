@@ -18,4 +18,4 @@ def input_file(tmpdir):
 def test_temperature_sensor(input_file):
     temperature_sensor = ds18b20.DS18B20(input_file)
 
-    assert temperature_sensor.poke() == 22.125
+    assert temperature_sensor.poke() == pytest.approx(22.125)
